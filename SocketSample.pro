@@ -26,12 +26,16 @@ SOURCES += \
         main.cpp \
         widget.cpp \
     socketwork.cpp \
-    dbwork.cpp
+    dbwork.cpp \
+    dbworkwithlib.cpp \
+    socketworkwithlib.cpp
 
 HEADERS += \
         widget.h \
     socketwork.h \
-    dbwork.h
+    dbwork.h \
+    dbworkwithlib.h \
+    socketworkwithlib.h
 
 FORMS += \
         widget.ui
@@ -40,3 +44,8 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+unix|win32: LIBS += -L$$PWD/../ProjectSample/AppSettings/release/ -lAppSettings
+
+INCLUDEPATH += $$PWD/../ProjectSample/AppSettings
+DEPENDPATH += $$PWD/../ProjectSample/AppSettings

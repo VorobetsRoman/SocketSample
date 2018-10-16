@@ -1,30 +1,24 @@
-#include "dbwork.h"
-#include <QSqlError>
+#include "dbworkwithlib.h"
+#include "appsettings.h"
 #include <QSqlDriver>
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QTime>
 #include <QVariant>
 
 
 
-DbWork::DbWork(QObject *parent) : QObject(parent)
+
+//========================================
+DbWorkWithLib::DbWorkWithLib(QObject *parent) : QObject(parent)
 {
     database = new QSqlDatabase();
 
-    QString dbName {"fucking"};
-    database->setDatabaseName(dbName);
-
-    QString dbAddress {"127.0.0.1"};
-    database->setHostName(dbAddress);
-
-    int dbPort {5000};
-    database->setPort(dbPort);
-
-    QString dbUserName {"SashaGray"};
-    database->setUserName(dbUserName);
-
-    QString password {"allInclusive"};
-    database->setPassword(password);
+    database->setDatabaseName(AppSettings::settingsValue("database/dbName", "database").toString());
+    database->setHostName(AppSettings::settingsValue("database/dbAddress", "127.0.0.1").toString());
+    database->setPort(AppSettings::settingsValue("database/dbPort", 5000).toInt());
+    database->setUserName(AppSettings::settingsValue("database/userName", "userName").toString());
+    database->setPassword(AppSettings::settingsValue("database/userPassword", "12345678").toString());
 
     if (!database->open()) {
         throw "error opening database:" + database->lastError().text();
@@ -41,7 +35,9 @@ DbWork::DbWork(QObject *parent) : QObject(parent)
 
 
 
-DbWork::~DbWork()
+
+//========================================
+DbWorkWithLib::~DbWorkWithLib()
 {
     if (database) {
         database->close();
@@ -51,7 +47,9 @@ DbWork::~DbWork()
 
 
 
-void DbWork::getData()
+
+//========================================
+void DbWorkWithLib::getData()
 {
     QSqlQuery query(*database);
     QString str {"select * from hz"};
@@ -75,6 +73,3 @@ void DbWork::getData()
 
     }
 }
-
-
-
